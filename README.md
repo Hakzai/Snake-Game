@@ -1,2 +1,2 @@
-# snake-game
-The first game I developed from scratch (i.e engine, scenario and core logic).
+# Snake Game
+The first game I developed in JavaFX from scratch (i.e engine, scenario and core logic).
