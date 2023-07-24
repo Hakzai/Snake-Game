@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="apMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.akeir.scene.controller.FXMLSnakeGameController">
+   <children>
+      <Label fx:id="lbTitle" alignment="CENTER" contentDisplay="CENTER" layoutX="198.0" layoutY="42.0" style="-fx-text-fill: white;" text="SNAKE GAME" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="197.0" AnchorPane.topAnchor="45.0">
+         <font>
+            <Font name="Ben Pioneer Bold" size="85.0" />
+         </font>
+      </Label>
+      <Pane fx:id="paneSnake" layoutX="40.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1200.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="135.0" />
+      <Rectangle fx:id="snakeTemplate" arcHeight="15.0" arcWidth="15.0" fill="#5c973c" height="25.0" layoutX="1182.0" layoutY="92.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="25.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="92.0" />
+      <Rectangle fx:id="snakeDead" arcHeight="15.0" arcWidth="15.0" height="25.0" layoutX="1147.0" layoutY="92.0" stroke="BLACK" strokeType="INSIDE" width="25.0" AnchorPane.rightAnchor="105.5" AnchorPane.topAnchor="92.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.65">
+               <stops>
+                  <Stop color="#4d0303" />
+                  <Stop color="RED" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <Circle fx:id="foodTemplate" fill="DODGERBLUE" layoutX="1227.0" layoutY="104.0" radius="12.5" stroke="BLACK" strokeType="INSIDE" AnchorPane.rightAnchor="40.5" AnchorPane.topAnchor="92.0" />
+      <Button fx:id="btnStart" layoutX="575.0" layoutY="626.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleBtnStart" prefHeight="40.0" prefWidth="130.0" text="Start" AnchorPane.bottomAnchor="69.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Button>
+      <Label fx:id="lbDead" alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="279.0" text="DEAD!" textFill="#830505" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="472.0" AnchorPane.rightAnchor="471.0" AnchorPane.topAnchor="279.0">
+        <font>
+            <Font name="Creepy Regular" size="128.0" />
+        </font>
+         <effect>
+            <Glow level="0.53" />
+         </effect>
+      </Label>
+      <Label fx:id="lbScore" alignment="CENTER" layoutX="40.0" layoutY="685.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="66.0" text="Score: " textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="1174.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbScoreCount" alignment="CENTER" layoutX="106.0" layoutY="688.0" text="0" textFill="WHITE" AnchorPane.bottomAnchor="2.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbHighScore" alignment="CENTER" layoutX="313.0" layoutY="685.0" prefHeight="35.0" prefWidth="115.0" text="High Score: " textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="313.0" AnchorPane.rightAnchor="852.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbHighScoreCount" alignment="CENTER" layoutX="428.0" layoutY="688.0" text="0" textFill="WHITE" AnchorPane.bottomAnchor="2.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbDeaths" alignment="CENTER" layoutX="822.0" layoutY="685.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="78.0" text="Deaths: " textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="380.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbDeathCount" alignment="CENTER" layoutX="900.0" layoutY="691.0" text="0" textFill="WHITE" AnchorPane.bottomAnchor="2.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbFood" alignment="CENTER" layoutX="997.0" layoutY="685.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="66.0" text="Food: " textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="230.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbFoodCount" alignment="CENTER" layoutX="1046.0" layoutY="689.0" text="0" textFill="WHITE" AnchorPane.bottomAnchor="2.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSpeed" alignment="CENTER" layoutX="1136.0" layoutY="685.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="78.0" text="Speed: " textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="70.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbSpeedCount" alignment="CENTER" layoutX="1205.0" layoutY="689.0" text="0" textFill="WHITE" AnchorPane.bottomAnchor="2.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
