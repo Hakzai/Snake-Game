@@ -6,13 +6,16 @@
 package com.akeir.helper;
 
 import com.akeir.global.Constants;
+import com.akeir.global.GlobalParams;
 import com.akeir.global.MessageLog;
+import com.akeir.resources.controllers.MusicController;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
  * @author Codeiro
  */
-public class Utils {
+public final class Utils {
     
     private Utils() { }
     
@@ -41,4 +44,24 @@ public class Utils {
         return number + Constants.TEN_AS_INTEGER;
     }
     
+    public static final double GET_RANDOM_POS_X()
+    {
+        int position = ThreadLocalRandom.current().nextInt(Constants.ZERO_AS_INTEGER, (int) (Constants.PANE_SNAKE_WIDTH / Constants.SCENE_BLOCK_SIZE));
+        return position * Constants.SCENE_BLOCK_SIZE;
+    }
+
+    public static final double GET_RANDOM_POS_Y() 
+    {
+        int position = ThreadLocalRandom.current().nextInt(Constants.ZERO_AS_INTEGER, (int) (Constants.PANE_SNAKE_HEIGHT / Constants.SCENE_BLOCK_SIZE));
+        return position * Constants.SCENE_BLOCK_SIZE;
+    }
+    
+    public static final void DO_CRASH()
+    {
+        GlobalParams.GAME_CRASHED = true;
+        GlobalParams.GAME_STARTED = false;
+        GlobalParams.IS_SOUND_ENABLED = false;
+        GlobalParams.IS_MUSIC_ENABLED = false;
+        MusicController.get().stopMusic();
+    }
 }

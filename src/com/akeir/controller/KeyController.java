@@ -8,6 +8,8 @@ package com.akeir.controller;
 import com.akeir.global.GlobalParams;
 import com.akeir.global.Constants;
 import com.akeir.global.MessageLog;
+import com.akeir.helper.Utils;
+import com.akeir.resources.controllers.MusicController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -21,7 +23,7 @@ public class KeyController implements EventHandler {
     
     @Override
     public void handle(Event event) {
-        if(event.getEventType().toString().equals(Constants.EVENT_KEY_PRESSED))
+        if(event.getEventType().toString().equals(Constants.EVENT_KEY_PRESSED) && !GlobalParams.GAME_CRASHED)
         {
             handleKeyAction((KeyEvent) event);
         }
@@ -30,62 +32,67 @@ public class KeyController implements EventHandler {
     private void handleKeyAction(KeyEvent event) 
     {
         KeyCode key = event.getCode();
-        if(!isValidMove(key, GlobalParams.SNAKE_DIRECTION))
-        {
-            MessageLog.INVALID_MOVE();
-            return;
-        }
         
         switch(key)
         {
-            case ENTER:
+            case ESCAPE:
                 MessageLog.STOP();
-                GlobalParams.GAME_STARTED = false;
+                Utils.DO_CRASH();
+                break;
+            case ENTER:
+                if(!GlobalParams.GAME_STARTED)
+                {
+                    GlobalParams.GAME_STARTED = true;
+                    MessageLog.RESUME();
+                }
+                else
+                {
+                    GlobalParams.GAME_STARTED = false;
+                    MessageLog.PAUSE();
+                }
                 break;
             case RIGHT:
-                GlobalParams.SNAKE_DIRECTION = Constants.DIR_RIGHT;
-                MessageLog.SNAKE_DIRECTION();
+                AnimationController.MOVE_QUEUE.offer(Constants.DIR_RIGHT);
                 break;
             case LEFT:
-                GlobalParams.SNAKE_DIRECTION = Constants.DIR_LEFT;
-                MessageLog.SNAKE_DIRECTION();
+                AnimationController.MOVE_QUEUE.offer(Constants.DIR_LEFT);
                 break;
             case DOWN:
-                GlobalParams.SNAKE_DIRECTION = Constants.DIR_DOWN;
-                MessageLog.SNAKE_DIRECTION();
+                AnimationController.MOVE_QUEUE.offer(Constants.DIR_DOWN);
                 break;
             case UP:
-                GlobalParams.SNAKE_DIRECTION = Constants.DIR_UP;
-                MessageLog.SNAKE_DIRECTION();
+                AnimationController.MOVE_QUEUE.offer(Constants.DIR_UP);
                 break;
             case TAB:
-                GlobalParams.GAME_SPEED *= Constants.TWO_AS_INTEGER;
+                GlobalParams.GAME_SPEED += Constants.ONE_AS_INTEGER;
                 MessageLog.FAST_FORWARD();
+                break;
+            case F1:
+                if(!GlobalParams.IS_MUSIC_ENABLED)
+                {
+                    GlobalParams.IS_MUSIC_ENABLED = true;
+                    MessageLog.ENABLE_MUSIC();
+                    MusicController.get().playMusic();
+                }
+                else
+                {
+                    GlobalParams.IS_MUSIC_ENABLED = false;
+                    MessageLog.DISABLE_MUSIC();
+                    MusicController.get().pauseMusic();
+                }
+                break;
+            case F2:
+                if(!GlobalParams.IS_SOUND_ENABLED)
+                {
+                    GlobalParams.IS_SOUND_ENABLED = true;
+                    MessageLog.ENABLE_SOUND();
+                }
+                else
+                {
+                    GlobalParams.IS_SOUND_ENABLED = false;
+                    MessageLog.DISABLE_SOUND();
+                }
                 break;
         }
     }
-    
-    private boolean isValidMove(KeyCode key, String currentDirection)
-    {
-        if(key.equals(KeyCode.RIGHT) && currentDirection.equals(Constants.DIR_LEFT))
-        {
-            return false;
-        }
-        else if(key.equals(KeyCode.LEFT) && currentDirection.equals(Constants.DIR_RIGHT))
-        {
-            return false;
-        }
-        else if(key.equals(KeyCode.DOWN) && currentDirection.equals(Constants.DIR_UP))
-        {
-            return false;
-        }
-        else if(key.equals(KeyCode.UP) && currentDirection.equals(Constants.DIR_DOWN))
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }    
 }

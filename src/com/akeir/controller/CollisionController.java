@@ -7,6 +7,7 @@ package com.akeir.controller;
 
 import com.akeir.global.Constants;
 import com.akeir.model.SnakePiece;
+import com.akeir.resources.controllers.SoundController;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
@@ -42,6 +43,7 @@ public final class CollisionController {
         {
             if(snakeHead.getLayoutX() == snakeBody.get(i).getLayoutX() && snakeHead.getLayoutY() == snakeBody.get(i).getLayoutY())
             {
+                SoundController.play().snakeCollideBody();
                 return true;
             }
         }
@@ -50,10 +52,16 @@ public final class CollisionController {
     
     public boolean isCollideWall(SnakePiece snakeHead)
     {
-        return Constants.ZERO_AS_DOUBLE > snakeHead.getLayoutX() 
+        if(Constants.ZERO_AS_DOUBLE > snakeHead.getLayoutX() 
                 || snakeHead.getLayoutX() > Constants.PANE_SNAKE_WIDTH-Constants.ONE_AS_INTEGER // MINUS ONE TO MARK THE COLLISION FOR WALL
                 || Constants.ZERO_AS_DOUBLE > snakeHead.getLayoutY() 
-                || snakeHead.getLayoutY() > Constants.PANE_SNAKE_HEIGHT-Constants.ONE_AS_INTEGER;
+                || snakeHead.getLayoutY() > Constants.PANE_SNAKE_HEIGHT-Constants.ONE_AS_INTEGER)
+        {
+            SoundController.play().snakeCollideWall();
+            return true;
+        }
+        
+        return false;
     }
     
 }

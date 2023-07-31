@@ -5,31 +5,20 @@
  */
 package com.akeir.global;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 /**
  *
  * @author Codeiro
  */
-public class GlobalParams {
+public final class GlobalParams {
 
     private GlobalParams() { }
     
     public static boolean GAME_STARTED = false;
+    public static boolean GAME_CRASHED = false;
+    public static boolean IS_SOUND_ENABLED = true;
+    public static boolean IS_MUSIC_ENABLED = true;
     
-    public static int GAME_SPEED = Constants.ONE_AS_INTEGER;
+    public static int GAME_SPEED = Constants.INITIAL_GAME_SPEED;
     
     public static String SNAKE_DIRECTION = Constants.DIR_RIGHT;
-    
-    public static double GET_RANDOM_POS_X() 
-    {
-        int position = ThreadLocalRandom.current().nextInt(Constants.ZERO_AS_INTEGER, (int) (Constants.PANE_SNAKE_WIDTH/Constants.SCENE_BLOCK_SIZE));
-        return position * Constants.SCENE_BLOCK_SIZE;
-    }
-    
-    public static double GET_RANDOM_POS_Y() 
-    {
-        int position = ThreadLocalRandom.current().nextInt(Constants.ZERO_AS_INTEGER, (int) (Constants.PANE_SNAKE_HEIGHT/Constants.SCENE_BLOCK_SIZE));
-        return position * Constants.SCENE_BLOCK_SIZE;
-    }
 }

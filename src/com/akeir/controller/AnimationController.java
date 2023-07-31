@@ -10,7 +10,13 @@ import com.akeir.global.Constants;
 import com.akeir.helper.ElementsHolder;
 import com.akeir.model.Food;
 import com.akeir.global.MessageLog;
+import com.akeir.helper.Utils;
 import com.akeir.model.SnakePiece;
+import com.akeir.resources.controllers.FileController;
+import com.akeir.resources.controllers.MusicController;
+import com.akeir.resources.controllers.SoundController;
+import java.util.LinkedList;
+import java.util.Queue;
 import javafx.animation.AnimationTimer;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -26,6 +32,7 @@ import javafx.scene.shape.Rectangle;
 public final class AnimationController extends AnimationTimer {
     
     private double time = Constants.ZERO_AS_DOUBLE;
+    public static Queue<String> MOVE_QUEUE = new LinkedList<>();
     
     private double snakeLastPosX;
     private double snakeLastPosY;
@@ -50,6 +57,7 @@ public final class AnimationController extends AnimationTimer {
     {
         this.snakeHead = (SnakePiece) snake.get(1);
         this.food = (Food) snake.get(0);
+        GlobalParams.GAME_SPEED = Constants.INITIAL_GAME_SPEED;
     }
     
     @Override
@@ -59,12 +67,12 @@ public final class AnimationController extends AnimationTimer {
 
         if (time > 0.1) 
         {
-            startAnimation();
+            executeAnimation();
             time = Constants.ZERO_AS_DOUBLE;
         }
     }
     
-    public void startAnimation()
+    private void executeAnimation()
     {
         if(!GlobalParams.GAME_STARTED)
         {
@@ -75,6 +83,7 @@ public final class AnimationController extends AnimationTimer {
         moveSnakeHead();
         moveSnakeBody();
         handleCollisions();
+        counter.updateSpeedCount();
     }
     
     private void setSnakeLastPosition() 
@@ -85,6 +94,8 @@ public final class AnimationController extends AnimationTimer {
     
     private void moveSnakeHead() 
     {
+        checkMoveQueue();
+        
         switch (GlobalParams.SNAKE_DIRECTION) 
         {
             case Constants.DIR_RIGHT:
@@ -102,7 +113,47 @@ public final class AnimationController extends AnimationTimer {
         }
         
         MessageLog.LOG_POSITION(snakeHead, food);
+        
+        SoundController.play().snakeMove();
     }
+    
+    private void checkMoveQueue()
+    {
+        if(!MOVE_QUEUE.isEmpty() && isValidMove(MOVE_QUEUE.peek()))
+        {
+            GlobalParams.SNAKE_DIRECTION = MOVE_QUEUE.poll();
+            MessageLog.SNAKE_DIRECTION();
+        }
+        else if(!MOVE_QUEUE.isEmpty())
+        {
+            MOVE_QUEUE.poll();
+            MessageLog.INVALID_MOVE();
+        }
+    }
+    
+    private boolean isValidMove(String key)
+    {
+        if(key.equals(Constants.DIR_RIGHT) && GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_LEFT))
+        {
+            return false;
+        }
+        else if(key.equals(Constants.DIR_LEFT) && GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_RIGHT))
+        {
+            return false;
+        }
+        else if(key.equals(Constants.DIR_DOWN) && GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_UP))
+        {
+            return false;
+        }
+        else if(key.equals(Constants.DIR_UP) && GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_DOWN))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }   
 
     private void moveSnakeBody() 
     {
@@ -138,6 +189,7 @@ public final class AnimationController extends AnimationTimer {
     private void handleGrowSnake()
     {
         MessageLog.GOTCHA();
+        SoundController.play().snakeEatsFood();
         
         spawnFood();
         SnakePiece snakeBody = new SnakePiece(snakeHead, snakeLastPosX, snakeLastPosY);
@@ -148,8 +200,8 @@ public final class AnimationController extends AnimationTimer {
     {
         Circle foodTest = new Circle();
         
-        foodTest.setLayoutX(GlobalParams.GET_RANDOM_POS_X());
-        foodTest.setLayoutY(GlobalParams.GET_RANDOM_POS_Y());
+        foodTest.setLayoutX(Utils.GET_RANDOM_POS_X());
+        foodTest.setLayoutY(Utils.GET_RANDOM_POS_Y());
         
         if(isValidFoodPosition(foodTest))
         {
@@ -186,6 +238,8 @@ public final class AnimationController extends AnimationTimer {
     {
         GlobalParams.GAME_STARTED = false;
         MessageLog.GAME_OVER();
+        SoundController.play().deathSound();
+        MusicController.get().stopMusic();
         this.stop();
         
         changeSnakeHeadToDead();
@@ -193,8 +247,10 @@ public final class AnimationController extends AnimationTimer {
         
         ((Button) elementsHolder.getElementsMap().get("btnStart")).setVisible(true);
         ((Label) elementsHolder.getElementsMap().get("lbDead")).setVisible(true);
-    }
         
+        FileController.get().saveScore(((Label) elementsHolder.getElementsMap().get("lbHighScoreCount")).getText());
+    }
+    
     private void changeSnakeHeadToDead()
     {
         SnakePiece snakeDead = new SnakePiece((Rectangle) elementsHolder.getElementsMap().get("snakeDead"), snakeHead.getLayoutX(), snakeHead.getLayoutY());

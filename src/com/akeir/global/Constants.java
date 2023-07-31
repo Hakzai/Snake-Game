@@ -10,7 +10,7 @@ package com.akeir.global;
  * @author Codeiro
  */
 public final class Constants {
-    
+
     private Constants() { }
     
     public static final int ZERO_AS_INTEGER = 0;
@@ -19,6 +19,7 @@ public final class Constants {
     public static final int FIVE_AS_INTEGER = 5;
     public static final int TEN_AS_INTEGER = 10;
     public static final int POINTS_TO_INCREASE_SPEED = 100;
+    public static final int INITIAL_GAME_SPEED = Constants.TWO_AS_INTEGER;
             
     public static final double ZERO_AS_DOUBLE = 0.0;
     public static final double SCENE_BLOCK_SIZE = 25.0;

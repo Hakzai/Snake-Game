@@ -9,6 +9,7 @@ import com.akeir.global.Constants;
 import com.akeir.global.GlobalParams;
 import com.akeir.helper.ElementsHolder;
 import com.akeir.helper.Utils;
+import com.akeir.resources.controllers.SoundController;
 import javafx.scene.control.Label;
 
 /**
@@ -98,12 +99,17 @@ public class CountersController {
         if(score%Constants.POINTS_TO_INCREASE_SPEED==Constants.ZERO_AS_INTEGER)
         {
             increaseSpeed();
+            SoundController.play().snakeSpeedsUp();
         }
     }
     
     public void increaseSpeed()
     {
         GlobalParams.GAME_SPEED += Constants.ONE_AS_INTEGER;
+    }
+    
+    public void updateSpeedCount()
+    {
         lbSpeedCount.setText(GlobalParams.GAME_SPEED + Constants.NO_CAP_LETTER_X);
     }
 }
