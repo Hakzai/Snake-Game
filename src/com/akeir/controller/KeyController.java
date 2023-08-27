@@ -52,16 +52,20 @@ public class KeyController implements EventHandler {
                 }
                 break;
             case RIGHT:
-                AnimationController.MOVE_QUEUE.offer(Constants.DIR_RIGHT);
+                if(!GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_RIGHT))
+                    AnimationController.MOVE_QUEUE.offer(Constants.DIR_RIGHT);
                 break;
             case LEFT:
-                AnimationController.MOVE_QUEUE.offer(Constants.DIR_LEFT);
+                if(!GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_LEFT))
+                    AnimationController.MOVE_QUEUE.offer(Constants.DIR_LEFT);
                 break;
             case DOWN:
-                AnimationController.MOVE_QUEUE.offer(Constants.DIR_DOWN);
+                if(!GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_DOWN))
+                    AnimationController.MOVE_QUEUE.offer(Constants.DIR_DOWN);
                 break;
             case UP:
-                AnimationController.MOVE_QUEUE.offer(Constants.DIR_UP);
+                if(!GlobalParams.SNAKE_DIRECTION.equals(Constants.DIR_UP))
+                    AnimationController.MOVE_QUEUE.offer(Constants.DIR_UP);
                 break;
             case TAB:
                 GlobalParams.GAME_SPEED += Constants.ONE_AS_INTEGER;
